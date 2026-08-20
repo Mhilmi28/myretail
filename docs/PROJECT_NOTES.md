@@ -75,7 +75,7 @@ myretail/
 - [x] Struktur folder disepakati (PHP native + HTML/CSS/JS native)
 - [x] Starter project dibuat (backend dasar: login, get/add produk, create transaksi; frontend: halaman login)
 - [x] Brief lengkap project (jenis bisnis, masalah, solusi) sudah didefinisikan
-- [ ] Update API Contract untuk fitur: diskon, hutang, laporan keuangan, struk
+- [x] Update API Contract untuk fitur: diskon, hutang, laporan keuangan, struk
 - [ ] Desain database lengkap (tabel discount, debt, dll)
 - [ ] Desain UI/UX (Figma) untuk semua halaman
 - [ ] Implementasi fitur laporan & dashboard evaluasi
