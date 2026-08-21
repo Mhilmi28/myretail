@@ -18,8 +18,8 @@ function requireAuth($conn, $requiredRole = null){
     }
 
     $stmt = $conn->prepare(
-        "SELECT * FROM u.id , u.name, u.email, u.role
-        FROM token t
+        "SELECT u.id , u.name, u.email, u.role
+        FROM tokens t
         JOIN users u ON u.id = t.user_id
         WHERE t.token = :token"
     );
@@ -31,7 +31,7 @@ function requireAuth($conn, $requiredRole = null){
         sendError('Token tidak valid atau sudah expired, silahkan login ulang', 401);
     }
 
-    if($requiredRol !== null && $user['role'] !== $requiredRole){
+    if($requiredRole !== null && $user['role'] !== $requiredRole){
         sendError('Akses ditolak, role tidak sesuai', 403);
     }
 
