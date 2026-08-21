@@ -23,7 +23,7 @@
 - Belum ada fitur diskon
 
 ## 3. Fitur yang Dibutuhkan (berdasarkan masalah di atas)
-- [ ] Login dengan role berbeda (Owner vs Kasir)
+- [x] Login dengan role berbeda (Owner vs Kasir)
 - [ ] Transaksi penjualan (kasir input, hitung otomatis, kembalian)
 - [ ] Cetak / tampilkan struk transaksi
 - [ ] Fitur diskon (per item atau per transaksi)
