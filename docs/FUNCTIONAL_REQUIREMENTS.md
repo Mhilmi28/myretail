@@ -5,7 +5,6 @@ Versi lengkap requirement, disusun berdasarkan brief awal + flow aplikasi yang s
 ---
 
 ## 1. Authentication
-- User dapat melakukan register
 - User dapat login
 - User dapat logout
 - Sistem memiliki role **Owner** dan **Cashier**

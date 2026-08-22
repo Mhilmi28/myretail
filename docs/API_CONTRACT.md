@@ -105,38 +105,6 @@ Response 200:
   }
 }
 ```
-
-### POST `/auth/register` *(owner only)*
-Bikin akun baru (owner atau cashier). Hanya bisa diakses owner yang sedang login — bukan endpoint publik.
-Request:
-```json
-{
-  "name": "Siti",
-  "email": "siti@toko.com",
-  "password": "12345678",
-  "role": "cashier"
-}
-```
-Response 201:
-```json
-{
-  "success": true,
-  "data": {
-    "id": 5,
-    "name": "Siti",
-    "email": "siti@toko.com",
-    "role": "cashier"
-  },
-  "message": "Akun berhasil dibuat"
-}
-```
-Response 403 (kalau yang akses bukan owner):
-```json
-{ "success": false, "message": "Hanya owner yang dapat membuat akun baru" }
-```
-
-> Catatan: akun owner pertama dibuat manual lewat database (lihat `backend/database/kasir_db.sql`), karena tidak ada jalur publik untuk membuat owner.
-
 ---
 
 ## 3. Kategori Produk
