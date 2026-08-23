@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Myretail Inventory Management</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="navbar__brand">
+      <img src="assets/icon-store.svg" alt="Myretail Logo" class="navbar__logo">
+      <span class="navbar__title">Myretail</span>
+    </div>
+    <h1 class="navbar__heading">Myretail Inventory Management</h1>
+    <div class="navbar__spacer"></div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="login-page">
+    <section class="login-card" aria-labelledby="login-title">
+      <h2 id="login-title" class="login-card__title">LOGIN</h2>
+
+      <form class="login-form" id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email" class="sr-only">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            placeholder="Email"
+            autocomplete="username"
+            required
+          >
+          <span class="form-error" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="sr-only">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          >
+          <span class="form-error" id="passwordError"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary login-form__submit">
+          Log in
+        </button>
+
+        <div class="login-form__footer">
+          <span class="login-form__forgot-text">Forgot password</span>
+          <button type="button" class="btn btn--outline btn--sm" id="forgotBtn">
+            Click here
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- External JS -->
+  <script src="js/login.js"></script>
+</body>
+</html>
