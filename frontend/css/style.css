@@ -195,6 +195,25 @@ input {
   color: #ffe3e3;
 }
 
+.form-error--general {
+  min-height: 0;
+  margin-top: 0;
+  padding: 0.6rem var(--spacing-md);
+  background-color: rgba(229, 62, 62, 0.15);
+  border: 1px solid rgba(255, 227, 227, 0.4);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.form-error--general[hidden] {
+  display: none;
+}
+
+.btn--primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* ---------- 7. Buttons ---------- */
 .btn {
   border-radius: var(--radius-sm);
