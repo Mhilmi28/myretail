@@ -28,12 +28,12 @@ if(!is_numeric($price) || $price < 0){
 }
 
 // validasi stok
-if(!filter_var($stock, FILTER_VALIDATE_INT) || $stock < 0){
+if(filter_var($stock, FILTER_VALIDATE_INT) === false || $stock < 0){
     sendError('Stok harus berupa bilangan bulat dan tidak boleh negatif', 422);
 }
 
 // validasi ID kategori
-if(!filter_var($category_id, FILTER_VALIDATE_INT)){
+if(filter_var($category_id, FILTER_VALIDATE_INT) === false){
     sendError('ID kategori tidak valid', 422);
 }
 
