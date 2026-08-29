@@ -33,7 +33,7 @@ if(filter_var($stock, FILTER_VALIDATE_INT) === false || $stock < 0){
 }
 
 // validasi ID kategori
-if(!filter_var($category_id, FILTER_VALIDATE_INT)){
+if(filter_var($category_id, FILTER_VALIDATE_INT) === false){
     sendError('ID kategori tidak valid', 422);
 }
 
