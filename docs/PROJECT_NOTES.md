@@ -27,7 +27,7 @@
 - [ ] Transaksi penjualan (kasir input, hitung otomatis, kembalian)
 - [ ] Cetak / tampilkan struk transaksi
 - [ ] Fitur diskon (per item atau per transaksi)
-- [ ] Manajemen stok produk (tambah, edit, kurangi otomatis saat transaksi)
+- [x] Manajemen stok produk (tambah, edit, kurangi otomatis saat transaksi)
 - [ ] Pencatatan hutang (piutang pelanggan / hutang ke supplier — perlu diperjelas lagi yang dimaksud)
 - [ ] Laporan keuangan: keuntungan kotor & bersih (bulanan, tahunan)
 - [ ] Dashboard evaluasi toko (misal: produk terlaris, tren penjualan)
@@ -41,8 +41,8 @@
 - **Tools:** XAMPP/Laragon, Postman, VS Code + Live Server, Git & GitHub
 
 ## 5. Pembagian Kerja
-- **Backend (PHP + MySQL):** [isi nama kamu]
-- **UI/UX (HTML/CSS/JS):** [isi nama temanmu]
+- **Backend (PHP + MySQL):** [Hafizh]
+- **UI/UX (HTML/CSS/JS):** [Hilmi]
 
 ## 6. Struktur Folder
 ```
@@ -75,8 +75,8 @@ myretail/
 - [x] Struktur folder disepakati (PHP native + HTML/CSS/JS native)
 - [x] Starter project dibuat (backend dasar: login, get/add produk, create transaksi; frontend: halaman login)
 - [x] Brief lengkap project (jenis bisnis, masalah, solusi) sudah didefinisikan
-- [x] Update API Contract untuk fitur: diskon, hutang, laporan keuangan, struk
-- [ ] Desain database lengkap (tabel discount, debt, dll)
+- [ ] Update API Contract untuk fitur: diskon, hutang, laporan keuangan, struk
+- [x] Desain database lengkap (tabel discount, debt, dll)
 - [ ] Desain UI/UX (Figma) untuk semua halaman
 - [ ] Implementasi fitur laporan & dashboard evaluasi
 
@@ -166,6 +166,14 @@ Stock cukup?
 
 ## 14. Semua Pertanyaan Sudah Terjawab ✅
 Brief & requirement sudah lengkap. Detail requirement per fitur (Authentication, Product Management, POS, Payment, Transaction, Inventory, Piutang, Laporan, Dashboard) ada di file terpisah: **`FUNCTIONAL_REQUIREMENTS.md`**.
+
+## 15. Progress Backend (update terbaru)
+- ✅ Auth: `login`, `me`, `logout` — lengkap & teruji
+- ✅ Categories: `get`, `add` — lengkap
+- ✅ Products: `get` (dengan search & filter kategori), `get_detail`, `add`, `update` (partial update), `delete`, `update_stock` — lengkap & teruji, sudah di-merge ke `main`
+- **Keputusan: pagination di-skip** untuk `get_products` — jumlah produk toko diperkirakan tidak terlalu banyak, bisa ditambahkan lagi nanti kalau dibutuhkan
+- **Keputusan direvisi: fitur register DIAKTIFKAN LAGI** (sebelumnya sempat dihapus dari rencana, lihat bagian 12) — pertimbangannya: tanpa register, owner harus insert akun kasir manual lewat database tiap kali ada kasir baru, ini tidak realistis untuk pemakaian sehari-hari. Aturan tetap sama seperti sebelumnya: hanya Owner yang bisa register akun baru (termasuk akun Kasir), endpoint `POST /auth/register` wajib pakai token Owner yang valid.
+- Selanjutnya: `auth/register.php`, lalu lanjut ke folder `transactions/`, `debts/`, `expenses/`, `reports/`, `dashboard/`, `users/`
 
 Siap lanjut ke: update API Contract lengkap + desain database schema berdasarkan requirement tersebut.
 

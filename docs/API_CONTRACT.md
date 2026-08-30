@@ -105,6 +105,42 @@ Response 200:
   }
 }
 ```
+
+### POST `/auth/register` *(owner only)*
+Bikin akun kasir baru. Hanya bisa diakses owner yang sedang login — bukan endpoint publik.
+Request:
+```json
+{
+  "name": "Siti",
+  "email": "siti@toko.com",
+  "password": "12345678",
+  "role": "cashier"
+}
+```
+Response 201:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 5,
+    "name": "Siti",
+    "email": "siti@toko.com",
+    "role": "cashier"
+  },
+  "message": "Akun berhasil dibuat"
+}
+```
+Response 403 (kalau yang akses bukan owner):
+```json
+{ "success": false, "message": "Hanya owner yang dapat membuat akun baru" }
+```
+Response 409 (email sudah dipakai):
+```json
+{ "success": false, "message": "Email sudah terdaftar" }
+```
+
+> Catatan: akun owner pertama tetap dibuat manual lewat database (lihat `backend/database/myretail_db.sql`), karena tidak ada jalur publik untuk membuat owner pertama kali. Setelah owner pertama ada, dia bisa pakai endpoint ini untuk menambah akun kasir baru — tidak perlu lagi masuk ke database secara manual.
+
 ---
 
 ## 3. Kategori Produk
@@ -134,7 +170,7 @@ Request:
 
 ### GET `/products`
 Akses: user login (owner & cashier — cashier read-only)
-Query params (opsional): `?search=indomie&category_id=1&page=1&limit=20`
+Query params (opsional): `?search=indomie&category_id=1`
 
 Response 200:
 ```json
@@ -151,13 +187,10 @@ Response 200:
       "image_url": "https://example.com/img/indomie.jpg"
     }
   ],
-  "meta": {
-    "current_page": 1,
-    "total_page": 3,
-    "total_data": 45
-  }
+  "message": "Berhasil"
 }
 ```
+> **Keputusan: pagination di-skip untuk versi ini** (tidak ada `page`, `limit`, atau `meta` di response). Jumlah produk di toko diperkirakan tidak terlalu banyak, jadi mengirim semua hasil sekaligus masih wajar. Bisa ditambahkan lagi nanti kalau jumlah produk sudah banyak dan performa mulai terasa lambat.
 
 ### GET `/products/:id`
 Akses: user login
@@ -298,7 +331,7 @@ Response 200:
 }
 ```
 
-> Untuk membuat user baru, pakai `POST /auth/register` (lihat bagian Auth) — bukan endpoint terpisah di sini, supaya logic pembuatan akun tetap satu tempat.
+> Untuk membuat user baru (owner atau cashier), pakai `POST /auth/register` (lihat bagian Auth) — bukan endpoint terpisah di sini, supaya logic pembuatan akun tetap satu tempat.
 
 ---
 
