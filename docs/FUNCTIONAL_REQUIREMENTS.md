@@ -8,6 +8,7 @@ Versi lengkap requirement, disusun berdasarkan brief awal + flow aplikasi yang s
 - User dapat login
 - User dapat logout
 - Sistem memiliki role **Owner** dan **Cashier**
+- Owner dapat melakukan register untuk membuat akun Kasir baru (tidak terbuka untuk publik)
 - Cashier hanya dapat mengakses: POS (transaksi) & melihat daftar produk
 - Owner dapat mengakses seluruh fitur (Produk, Inventory, Laporan, Piutang, Dashboard)
 
@@ -82,7 +83,6 @@ Versi lengkap requirement, disusun berdasarkan brief awal + flow aplikasi yang s
 | Modul | Owner | Cashier |
 |---|---|---|
 | Auth (login/logout) | Ya | Ya |
-| Register | Ya (hanya Owner yang bisa buat akun baru, termasuk akun Kasir) | Tidak (tidak bisa self-register) |
 | Product Management (CRUD) | Ya | Read-only |
 | POS / Transaksi | Opsional (monitoring) | Ya |
 | Payment | - | Ya |
@@ -91,7 +91,7 @@ Versi lengkap requirement, disusun berdasarkan brief awal + flow aplikasi yang s
 | Piutang | Ya | Tidak |
 | Laporan & Dashboard | Ya | Tidak |
 
-> **Catatan implementasi:** karena register tidak publik, endpoint `POST /auth/register` hanya bisa diakses oleh user yang sudah login sebagai Owner (perlu token & pengecekan role di backend). Perlu ada 1 akun Owner awal yang di-set manual langsung di database (lewat file `.sql` seperti yang sudah ada di starter project) sebagai starting point, karena tidak ada jalur publik untuk membuat Owner pertama.
+> **Catatan implementasi:** endpoint `POST /auth/register` hanya bisa diakses oleh Owner yang sudah login (bukan endpoint publik) — dipakai untuk membuat akun Kasir baru. Akun Owner pertama tetap harus dibuat manual langsung di database lewat file `.sql` atau phpMyAdmin, karena tidak ada jalur publik untuk membuat Owner pertama kali.
 
 ---
 
