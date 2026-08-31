@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Owner - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <a href="dashboard-owner.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">📊</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li>
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li>
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Transaksi</span>
+          </a>
+        </li>
+        <li>
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li>
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li>
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Dashboard</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role">Owner</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+      <p class="dashboard__welcome">Ringkasan performa toko hari ini.</p>
+
+      <!-- Statistik ringkas -- data dari GET /dashboard/summary -->
+      <section class="stat-grid" id="statGrid">
+        <div class="stat-card">
+          <div class="stat-card__label">Pendapatan Hari Ini</div>
+          <div class="stat-card__value" id="statRevenue">Rp 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Transaksi Hari Ini</div>
+          <div class="stat-card__value" id="statTransactions">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Produk Stok Menipis</div>
+          <div class="stat-card__value" id="statLowStock">0</div>
+        </div>
+      </section>
+
+      <!-- Placeholder section, akan diisi tabel/chart di iterasi berikutnya -->
+      <section class="panel">
+        <h2 class="panel__title">Produk Stok Menipis</h2>
+        <div class="empty-state" id="lowStockEmptyState">
+          <span class="empty-state__title">Belum ada data</span>
+          <p>Data akan tampil di sini setelah terhubung ke <code>GET /dashboard/summary</code>.</p>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/dashboard-owner.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Kasir - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <a href="dashboard-cashier.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li>
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li>
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Kasir</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role">Cashier</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+      <p class="dashboard__welcome">Mulai transaksi penjualan baru.</p>
+
+      <!-- Placeholder halaman POS, akan diisi form transaksi di iterasi berikutnya -->
+      <section class="panel">
+        <h2 class="panel__title">Transaksi Baru</h2>
+        <div class="empty-state" id="posEmptyState">
+          <span class="empty-state__title">Form kasir belum dibangun</span>
+          <p>Halaman ini akan terhubung ke <code>POST /transactions</code> — pilih produk, hitung total, pilih metode pembayaran.</p>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/dashboard-cashier.js"></script>
+</body>
+</html>

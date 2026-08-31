@@ -1,21 +1,9 @@
 // ==========================================================================
 // login.js
 // Validasi form + proses autentikasi ke backend Myretail.
+// Endpoint & format response mengikuti API_CONTRACT.md.
+// Bergantung pada js/config.js (harus di-load lebih dulu di HTML).
 // ==========================================================================
-
-// ---------- Config ----------
-// TODO: sesuaikan base URL/endpoint dengan struktur routing backend project.
-const API_LOGIN_URL = '/backend/api/auth/login.php';
-
-// Key yang dipakai untuk menyimpan sesi login di localStorage.
-const AUTH_TOKEN_KEY = 'myretail_token';
-const AUTH_USER_KEY = 'myretail_user';
-
-// Mapping role -> halaman dashboard tujuan.
-const DASHBOARD_BY_ROLE = {
-  admin: 'dashboard-admin.html',
-  cashier: 'dashboard-cashier.html',
-};
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('loginForm');
@@ -64,16 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!passwordInput.value.trim()) {
       passwordError.textContent = 'Password wajib diisi.';
       isValid = false;
-    } else if (passwordInput.value.length < 6) {
-      passwordError.textContent = 'Password minimal 6 karakter.';
-      isValid = false;
     }
 
     return isValid;
   }
 
   /**
-   * Kirim kredensial ke backend dan proses hasilnya.
+   * Kirim kredensial ke POST /auth/login dan proses hasilnya.
    * @param {{email: string, password: string}} credentials
    */
   async function handleLogin(credentials) {
@@ -81,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearFormError();
 
     try {
-      const response = await fetch(API_LOGIN_URL, {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,12 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(credentials),
       });
 
-      // Response tetap di-parse walau status bukan 2xx,
-      // karena backend selalu mengirim JSON (sendSuccess/sendError).
       const result = await response.json();
 
-      if (!response.ok || !result.success) {
-        showFormError(result.message || 'Login gagal. Silakan coba lagi.');
+      if (!result.success) {
+        // Tampilkan error validasi per-field kalau ada (status 422),
+        // selain itu tampilkan message umum (401: email/password salah, dll).
+        if (result.errors) {
+          applyFieldErrors(result.errors);
+        } else {
+          showFormError(result.message || 'Login gagal. Silakan coba lagi.');
+        }
         return;
       }
 
@@ -110,16 +99,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /**
    * Simpan sesi & redirect sesuai role setelah login berhasil.
-   * @param {{token: string, user: {id:number,name:string,email:string,role:string}}} data
+   * @param {{token: string, user: {id:number,name:string,email:string,role:'owner'|'cashier'}}} data
    */
   function onLoginSuccess(data) {
-    const { token, user } = data;
+    setAuthSession(data.token, data.user);
 
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
-
-    const destination = DASHBOARD_BY_ROLE[user.role] || 'dashboard-cashier.html';
+    const destination = DASHBOARD_BY_ROLE[data.user.role] || 'login.html';
     window.location.href = destination;
+  }
+
+  /**
+   * Tampilkan error validasi per-field dari response 422.
+   * @param {Record<string, string[]>} errors
+   */
+  function applyFieldErrors(errors) {
+    if (errors.email) emailError.textContent = errors.email[0];
+    if (errors.password) passwordError.textContent = errors.password[0];
   }
 
   function setLoadingState(isLoading) {
@@ -132,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
       formError.textContent = message;
       formError.hidden = false;
     } else {
-      // Fallback jika elemen #formError belum ada di HTML.
       alert(message);
     }
   }
