@@ -247,11 +247,15 @@ Request:
   ],
   "discount_total": 1000,
   "payment_method": "cash",
-  "cash_received": 20000
+  "cash_received": 20000,
+  "customer_name": null
 }
 ```
-`payment_method` harus salah satu dari: `"cash"`, `"qris"`, `"transfer"`, `"debit"`.
+`payment_method` harus salah satu dari: `"cash"`, `"qris"`, `"transfer"`, `"debit"`, `"debt"`.
 `cash_received` wajib diisi kalau `payment_method` adalah `"cash"`; untuk metode lain boleh dikosongkan/diabaikan.
+`customer_name` **wajib diisi** kalau `payment_method` adalah `"debt"` (nama pelanggan yang berhutang); untuk metode lain boleh dikosongkan/diabaikan.
+
+> **Piutang otomatis dibuat**: kalau `payment_method` adalah `"debt"`, sistem otomatis membuat 1 baris baru di tabel `debts` (status `"unpaid"`), terhubung ke transaksi ini lewat `transaction_id`. Owner bisa melihat & menandai lunas lewat endpoint `/debts` (lihat bagian 7). Transaksi tetap tercatat `status: "success"` (barang tetap keluar dari stok) — yang berstatus "belum lunas" adalah piutangnya, bukan transaksinya.
 
 Response 201 (pembayaran berhasil):
 ```json
@@ -338,7 +342,10 @@ Response 200:
 ## 7. Piutang (Customer Debt) *(owner only)*
 
 ### GET `/debts`
-Query params (opsional): `?status=unpaid`
+Query params (opsional): `?status=unpaid&customer_name=Joko`
+- `status` — filter berdasarkan status piutang (`unpaid` atau `paid`)
+- `customer_name` — cari piutang berdasarkan nama pelanggan (pencarian sebagian, tidak harus cocok persis, tidak case-sensitive)
+
 Response 200:
 ```json
 {
