@@ -62,7 +62,7 @@ CREATE TABLE transactions (
     subtotal INT NOT NULL,
     discount_total INT NOT NULL DEFAULT 0,
     total INT NOT NULL,
-    payment_method ENUM('cash', 'qris', 'transfer', 'debit') NOT NULL,
+    payment_method ENUM('cash', 'qris', 'transfer', 'debit', 'debt') NOT NULL,
     cash_received INT DEFAULT NULL,
     change_amount INT DEFAULT NULL,
     status ENUM('success', 'failed') NOT NULL DEFAULT 'success',

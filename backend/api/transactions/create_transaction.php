@@ -14,18 +14,23 @@ $items = $input['items'] ?? [];
 $discount = $input['discount_total'] ?? 0;
 $payment = $input['payment_method'] ?? '';
 $cash = $input['cash_received'] ?? 0;
+$customerName = trim($input['customer_name'] ?? '');
 
 if(empty($items)){
     sendError('Item transaksi tidak boleh kosong', 422);
 }
 
-$validPaymentMethods = ['cash', 'qris', 'transfer', 'debit'];
+$validPaymentMethods = ['cash', 'qris', 'transfer', 'debit', 'debt'];
 if(!in_array($payment, $validPaymentMethods)){
     sendError("Metode pembayaran harus salah satu dari: " . implode(', ', $validPaymentMethods), 422);
 }
 
 if($payment === 'cash' && $cash <= 0){
     sendError('Nominal uang yang diterima wajib diisi untuk pembayaran cash', 422);
+}
+
+if ($payment === 'debt' && empty($customerName)) {
+    sendError('Nama pelanggan wajib diisi untuk pembayaran hutang', 422);
 }
 
 try{
@@ -109,6 +114,15 @@ try{
         $stmt->execute([
             'id' => $d['product_id'],
             'qty' => $d['qty']
+            ]);
+    }
+
+    if ($payment === 'debt') {
+            $stmt = $conn->prepare("INSERT INTO debts (customer_name, transaction_id, amount, status) VALUES (:customer_name, :transaction_id, :amount, 'unpaid')");
+            $stmt->execute([
+                'customer_name' => $customerName,
+                'transaction_id' => $transactionId,
+                'amount' => $total
             ]);
     }
     
