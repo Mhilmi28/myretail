@@ -49,7 +49,7 @@ $debtId = $conn->lastInsertId();
 sendSuccess([
     'id' => $debtId,
     'customer_name' => $customerName,
-    'transaction_id' => $transactionId,
+    'transaction_id' => $transactionId ?: null,
     'amount' => $amount,
     'status' => 'unpaid'
 ], 'Piutang berhasil dicatat', 201);
