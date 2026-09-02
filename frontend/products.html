@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produk - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <!-- data-roles menentukan role mana yang boleh lihat menu ini.
+         Item yang rolenya tidak cocok akan disembunyikan oleh products.js
+         setelah data user tervalidasi (lihat applyRoleUI di products.js). -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Produk</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role" id="userRole">-</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+
+      <!-- Toolbar: search, filter kategori, tombol tambah (owner only) -->
+      <div class="toolbar">
+        <input
+          type="text"
+          class="input input--search"
+          id="searchInput"
+          placeholder="Cari nama atau SKU produk..."
+        >
+
+        <select class="select" id="categoryFilter">
+          <option value="">Semua Kategori</option>
+        </select>
+
+        <div class="toolbar__spacer"></div>
+
+        <button type="button" class="btn btn--solid" id="addProductBtn" data-owner-only hidden>
+          + Tambah Produk
+        </button>
+      </div>
+
+      <!-- Tabel produk -->
+      <section class="panel">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Produk</th>
+                <th>Kategori</th>
+                <th class="is-numeric">Harga</th>
+                <th class="is-numeric">Stok</th>
+                <th data-owner-only hidden>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody">
+              <!-- Diisi oleh products.js -->
+              <tr>
+                <td colspan="6">
+                  <div class="empty-state">
+                    <span class="empty-state__title">Memuat data...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination" hidden>
+          <span class="pagination__info" id="paginationInfo"></span>
+          <button type="button" class="pagination__btn" id="prevPageBtn">‹</button>
+          <span id="pageNumbers"></span>
+          <button type="button" class="pagination__btn" id="nextPageBtn">›</button>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ===== MODAL: Tambah/Edit Produk (owner only) ===== -->
+  <div class="modal-overlay" id="productModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="productModalTitle">Tambah Produk</h2>
+        <button type="button" class="modal__close" id="closeProductModalBtn">✕</button>
+      </div>
+
+      <form id="productForm">
+        <div class="modal__body">
+          <p class="field__error" id="productFormError" style="display:none;"></p>
+
+          <div class="field">
+            <label class="field__label" for="productName">Nama Produk</label>
+            <input type="text" id="productName" name="name" class="input" required>
+            <span class="field__error" id="productNameError"></span>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="productSku">SKU</label>
+              <input type="text" id="productSku" name="sku" class="input" required>
+              <span class="field__error" id="productSkuError"></span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="productCategory">Kategori</label>
+              <select id="productCategory" name="category_id" class="select" required>
+                <option value="">Pilih kategori</option>
+              </select>
+              <span class="field__error" id="productCategoryError"></span>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="productPrice">Harga (Rp)</label>
+              <input type="number" id="productPrice" name="price" class="input" min="0" required>
+              <span class="field__error" id="productPriceError"></span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="productStock">Stok Awal</label>
+              <input type="number" id="productStock" name="stock" class="input" min="0" required>
+              <span class="field__error" id="productStockError"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="productImageUrl">URL Gambar (opsional)</label>
+            <input type="url" id="productImageUrl" name="image_url" class="input" placeholder="https://...">
+            <span class="field__error" id="productImageUrlError"></span>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" id="cancelProductBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveProductBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Update Stok cepat (owner only, PATCH /products/:id/stock) ===== -->
+  <div class="modal-overlay" id="stockModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Update Stok</h2>
+        <button type="button" class="modal__close" id="closeStockModalBtn">✕</button>
+      </div>
+
+      <form id="stockForm">
+        <div class="modal__body">
+          <p class="field__error" id="stockFormError" style="display:none;"></p>
+          <div class="field">
+            <label class="field__label" id="stockProductLabel" for="stockValue">Stok baru</label>
+            <input type="number" id="stockValue" name="stock" class="input" min="0" required>
+            <span class="field__error" id="stockValueError"></span>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" id="cancelStockBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveStockBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>
