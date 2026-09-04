@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasir - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="pos.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Kasir</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role" id="userRole">-</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+      <div class="pos-grid">
+
+        <!-- ===== KIRI: PILIH PRODUK ===== -->
+        <section class="panel">
+          <h2 class="panel__title">Pilih Produk</h2>
+          <input
+            type="text"
+            class="input product-picker__search"
+            id="productSearchInput"
+            placeholder="Cari nama atau SKU produk..."
+          >
+          <div class="product-grid" id="productGrid">
+            <div class="empty-state">
+              <span class="empty-state__title">Memuat produk...</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== KANAN: KERANJANG & PEMBAYARAN ===== -->
+        <section class="panel cart-panel">
+          <h2 class="panel__title">Keranjang</h2>
+
+          <p class="alert-banner" id="posErrorBanner" hidden></p>
+
+          <div class="cart-list" id="cartList">
+            <div class="cart-empty" id="cartEmptyState">
+              Keranjang masih kosong.<br>Pilih produk di sebelah kiri untuk mulai.
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="summary__row">
+              <span>Subtotal</span>
+              <span id="summarySubtotal">Rp 0</span>
+            </div>
+
+            <div class="summary__row summary__row--input">
+              <label for="discountTotalInput">Diskon Total</label>
+              <input type="number" id="discountTotalInput" class="input" min="0" value="0">
+            </div>
+
+            <div class="summary__row summary__row--total">
+              <span>Total</span>
+              <span id="summaryTotal">Rp 0</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="field__label">Metode Pembayaran</label>
+            <div class="payment-methods" id="paymentMethods">
+              <button type="button" class="payment-method-btn is-active" data-value="cash">Tunai</button>
+              <button type="button" class="payment-method-btn" data-value="qris">QRIS</button>
+              <button type="button" class="payment-method-btn" data-value="transfer">Transfer</button>
+              <button type="button" class="payment-method-btn" data-value="debit">Debit</button>
+              <button type="button" class="payment-method-btn" data-value="hutang">Hutang</button>
+            </div>
+            <p class="payment-method-hint" id="hutangHint" hidden>
+              Dicatat sebagai piutang otomatis setelah transaksi berhasil.
+            </p>
+          </div>
+
+          <div class="cash-field" id="cashField">
+            <div class="summary__row summary__row--input">
+              <label for="cashReceivedInput">Uang Diterima</label>
+              <input type="number" id="cashReceivedInput" class="input" min="0" value="0">
+            </div>
+            <div class="summary__row summary__row--change" id="changeRow" hidden>
+              <span>Kembalian</span>
+              <span id="summaryChange">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="customer-name-field" id="customerNameField" hidden>
+            <div class="field">
+              <label class="field__label" for="customerNameInput">Nama Pelanggan (untuk piutang)</label>
+              <input type="text" id="customerNameInput" class="input" placeholder="Nama pelanggan">
+            </div>
+          </div>
+
+          <button type="button" class="btn--pay" id="payBtn" disabled>
+            Bayar
+          </button>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ===== MODAL: Struk / Receipt ===== -->
+  <div class="modal-overlay" id="receiptModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Transaksi Berhasil</h2>
+        <button type="button" class="modal__close" id="closeReceiptModalBtn">✕</button>
+      </div>
+
+      <div class="modal__body">
+        <p class="alert-banner alert-banner--warning" id="debtWarningBanner" hidden></p>
+
+        <div class="receipt__meta" id="receiptMeta"></div>
+        <div class="receipt__items" id="receiptItems"></div>
+
+        <div class="summary__row">
+          <span>Subtotal</span>
+          <span id="receiptSubtotal"></span>
+        </div>
+        <div class="summary__row">
+          <span>Diskon</span>
+          <span id="receiptDiscount"></span>
+        </div>
+        <div class="summary__row summary__row--total">
+          <span>Total</span>
+          <span id="receiptTotal"></span>
+        </div>
+        <div class="summary__row" id="receiptCashRow" hidden>
+          <span>Uang Diterima</span>
+          <span id="receiptCash"></span>
+        </div>
+        <div class="summary__row summary__row--change" id="receiptChangeRow" hidden>
+          <span>Kembalian</span>
+          <span id="receiptChange"></span>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button type="button" class="btn btn--solid" id="newTransactionBtn">Transaksi Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/pos.js"></script>
+</body>
+</html>

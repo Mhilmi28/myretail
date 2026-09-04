@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piutang - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="pos.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Piutang</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role">Owner</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+
+      <!-- Ringkasan -->
+      <section class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__label">Total Piutang Belum Lunas</div>
+          <div class="stat-card__value" id="statUnpaidTotal">Rp 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Jumlah Piutang Aktif</div>
+          <div class="stat-card__value" id="statUnpaidCount">0</div>
+        </div>
+      </section>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <select class="select" id="statusFilter">
+          <option value="">Semua Status</option>
+          <option value="unpaid">Belum Lunas</option>
+          <option value="paid">Lunas</option>
+        </select>
+
+        <div class="toolbar__spacer"></div>
+
+        <button type="button" class="btn btn--solid" id="addDebtBtn">
+          + Catat Piutang Manual
+        </button>
+      </div>
+
+      <!-- Tabel piutang -->
+      <section class="panel">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Pelanggan</th>
+                <th>No. Transaksi</th>
+                <th class="is-numeric">Jumlah</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="debtTableBody">
+              <tr>
+                <td colspan="6">
+                  <div class="empty-state">
+                    <span class="empty-state__title">Memuat data...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ===== MODAL: Catat Piutang Manual (POST /debts) ===== -->
+  <div class="modal-overlay" id="debtModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Catat Piutang Manual</h2>
+        <button type="button" class="modal__close" id="closeDebtModalBtn">✕</button>
+      </div>
+
+      <form id="debtForm">
+        <div class="modal__body">
+          <p class="field__error" id="debtFormError" style="display:none;"></p>
+
+          <p style="font-size:0.8rem; color:var(--color-text-muted); margin-top:-0.4rem;">
+            Piutang harus terhubung ke transaksi yang sudah ada. Salin No. Transaksi dari halaman
+            <strong>Riwayat Transaksi</strong>.
+          </p>
+
+          <div class="field">
+            <label class="field__label" for="debtCustomerName">Nama Pelanggan</label>
+            <input type="text" id="debtCustomerName" class="input" required>
+            <span class="field__error" id="debtCustomerNameError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="debtTransactionId">No. Transaksi</label>
+            <input type="text" id="debtTransactionId" class="input" placeholder="Contoh: TRX-20260820-002" required>
+            <span class="field__error" id="debtTransactionIdError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="debtAmount">Jumlah Piutang (Rp)</label>
+            <input type="number" id="debtAmount" class="input" min="0" required>
+            <span class="field__error" id="debtAmountError"></span>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" id="cancelDebtBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveDebtBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/debts.js"></script>
+</body>
+</html>
