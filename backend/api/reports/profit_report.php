@@ -7,6 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     sendError('Metode request tidak diizinkan', 405);
 }
 
+requireAuth($conn, 'owner');
+
 $period = $_GET['period'] ?? '';
 $year   = $_GET['year'] ?? '';
 $month  = $_GET['month'] ?? '';
@@ -42,16 +44,14 @@ $stmt = $conn->prepare("SELECT COALESCE(SUM(amount), 0) AS total_expenses
 $stmt->execute($params);
 $expenseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$revenue = (float) $transactionData['revenue'];
-$totalExpenses = (float) $expenseData['total_expenses'];
-
-$profit = $revenue - $totalExpenses;
+$grossProfit = (int) $transactionData['revenue'];
+$totalExpenses = (int) $expenseData['total_expenses'];
+$netProfit = $grossProfit - $totalExpenses;
 
 sendSuccess([
     'period' => $periodLabel,
-    'total_transactions' => (int) $transactionData['total_transactions'],
-    'revenue' => $revenue,
-    'total_discount' => (float) $transactionData['total_discount'],
+    'gross_profit' => $grossProfit,
     'total_expenses' => $totalExpenses,
-    'profit' => $profit
-], 'Laporan berhasil diambil');
+    'net_profit' => $netProfit,
+    'total_discount_given' => (int) $transactionData['total_discount']
+]);
