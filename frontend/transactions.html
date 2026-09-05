@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Transaksi - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="pos.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Riwayat Transaksi</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role" id="userRole">-</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+
+      <!-- Filter -->
+      <div class="toolbar">
+        <div class="field" style="gap:0.2rem;">
+          <label class="field__label" for="startDateInput" style="font-size:0.75rem;">Dari Tanggal</label>
+          <input type="date" id="startDateInput" class="input">
+        </div>
+
+        <div class="field" style="gap:0.2rem;">
+          <label class="field__label" for="endDateInput" style="font-size:0.75rem;">Sampai Tanggal</label>
+          <input type="date" id="endDateInput" class="input">
+        </div>
+
+        <div class="field" style="gap:0.2rem;" data-owner-only hidden>
+          <label class="field__label" for="cashierFilter" style="font-size:0.75rem;">Kasir</label>
+          <select id="cashierFilter" class="select">
+            <option value="">Semua Kasir</option>
+          </select>
+        </div>
+
+        <div class="toolbar__spacer"></div>
+
+        <button type="button" class="btn btn--ghost" id="resetFilterBtn">Reset Filter</button>
+      </div>
+
+      <!-- Tabel transaksi -->
+      <section class="panel">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>No. Transaksi</th>
+                <th>Tanggal</th>
+                <th>Kasir</th>
+                <th>Metode</th>
+                <th class="is-numeric">Total</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">
+                    <span class="empty-state__title">Memuat data...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination" id="pagination" hidden>
+          <span class="pagination__info" id="paginationInfo"></span>
+          <button type="button" class="pagination__btn" id="prevPageBtn">‹</button>
+          <span id="pageNumbers"></span>
+          <button type="button" class="pagination__btn" id="nextPageBtn">›</button>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ===== MODAL: Detail Transaksi (GET /transactions/:id) ===== -->
+  <div class="modal-overlay" id="detailModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Detail Transaksi</h2>
+        <button type="button" class="modal__close" id="closeDetailModalBtn">✕</button>
+      </div>
+
+      <div class="modal__body" id="detailModalBody">
+        <div class="empty-state">
+          <span class="empty-state__title">Memuat detail...</span>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button type="button" class="btn btn--ghost" id="closeDetailModalBtn2">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/transactions.js"></script>
+</body>
+</html>
