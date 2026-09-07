@@ -141,7 +141,7 @@ async function loadProductPicker(search = '') {
   const params = new URLSearchParams({ limit: 12 });
   if (search) params.set('search', search);
 
-  const { result } = await authFetch(`/products?${params.toString()}`, { method: 'GET' });
+  const { result } = await authFetch(`/products/get_products.php?${params.toString()}`, { method: 'GET' });
 
   if (!result.success) {
     els.productGrid.innerHTML = `<div class="empty-state"><span class="empty-state__title">Gagal memuat produk</span></div>`;
@@ -370,7 +370,7 @@ async function handlePayment() {
   };
 
   try {
-    const { response, result } = await authFetch('/transactions', {
+    const { response, result } = await authFetch('/transactions/create_transaction.php', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
@@ -425,7 +425,7 @@ function handlePaymentError(status, result) {
  */
 async function recordDebt(transactionData, amount) {
   try {
-    const { result } = await authFetch('/debts', {
+    const { result } = await authFetch('/debts/add_debt.php', {
       method: 'POST',
       body: JSON.stringify({
         customer_name: customerName.trim(),

@@ -75,7 +75,7 @@ async function loadDebts() {
   `;
 
   const params = currentStatusFilter ? `?status=${currentStatusFilter}` : '';
-  const { result } = await authFetch(`/debts${params}`, { method: 'GET' });
+  const { result } = await authFetch(`/debts/get_debts.php?${params}`, { method: 'GET' });
 
   if (!result.success) {
     els.tableBody.innerHTML = `
@@ -151,7 +151,7 @@ async function handleMarkPaid(debtId, customerName) {
   const confirmed = confirm(`Tandai piutang atas nama "${customerName}" sebagai lunas?`);
   if (!confirmed) return;
 
-  const { result } = await authFetch(`/debts/${debtId}`, {
+  const { result } = await authFetch(`/debts/update_debt.php?${debtId}`, {
     method: 'PATCH',
     body: JSON.stringify({ status: 'paid' }),
   });
@@ -193,7 +193,7 @@ async function handleDebtFormSubmit(e) {
   saveBtn.textContent = 'Menyimpan...';
 
   try {
-    const { result } = await authFetch('/debts', {
+    const { result } = await authFetch('/debts/add_debt.php', {
       method: 'POST',
       body: JSON.stringify(payload),
     });

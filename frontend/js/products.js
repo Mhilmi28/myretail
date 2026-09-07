@@ -171,7 +171,7 @@ async function loadProducts() {
   if (currentSearch) params.set('search', currentSearch);
   if (currentCategoryId) params.set('category_id', currentCategoryId);
 
-  const { result } = await authFetch(`/products?${params.toString()}`, { method: 'GET' });
+  const { result } = await authFetch(`/products/get_products.php?${params.toString()}`, { method: 'GET' });
 
   if (!result.success) {
     renderTableError(result.message || 'Gagal memuat data produk.');

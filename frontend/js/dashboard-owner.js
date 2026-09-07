@@ -39,7 +39,7 @@ function getInitials(name) {
  * Ambil ringkasan dashboard dari GET /dashboard/summary dan render ke stat card.
  */
 async function loadDashboardSummary() {
-  const { result } = await authFetch('/dashboard/summary', { method: 'GET' });
+  const { result } = await authFetch('/dashboard/summary.php', { method: 'GET' });
 
   if (!result.success) {
     console.error('Gagal memuat ringkasan dashboard:', result.message);

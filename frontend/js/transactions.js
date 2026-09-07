@@ -127,7 +127,7 @@ function bindEvents() {
 
 /** Isi dropdown filter kasir dari GET /users (owner only). */
 async function loadCashierFilterOptions() {
-  const { result } = await authFetch('/users', { method: 'GET' });
+  const { result } = await authFetch('/users/get_users.php', { method: 'GET' });
   if (!result.success) return;
 
   result.data.forEach((user) => {
@@ -147,7 +147,7 @@ async function loadTransactions() {
   if (filters.end_date) params.set('end_date', filters.end_date);
   if (filters.cashier_id) params.set('cashier_id', filters.cashier_id);
 
-  const { result } = await authFetch(`/transactions?${params.toString()}`, { method: 'GET' });
+  const { result } = await authFetch(`/transactions/get_transactions.php?${params.toString()}`, { method: 'GET' });
 
   if (!result.success) {
     renderTableError(result.message || 'Gagal memuat data transaksi.');
@@ -271,7 +271,7 @@ async function openDetailModal(transactionId) {
     <div class="empty-state"><span class="empty-state__title">Memuat detail...</span></div>
   `;
 
-  const { result } = await authFetch(`/transactions/${transactionId}`, { method: 'GET' });
+  const { result } = await authFetch(`/transactions/get_transaction_detail.php?${transactionId}`, { method: 'GET' });
 
   if (!result.success) {
     els.detailModalBody.innerHTML = `

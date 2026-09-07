@@ -34,7 +34,7 @@ async function requireAuth(allowedRoles) {
     return null;
   }
 
-  const { response, result } = await authFetch('/auth/me', { method: 'GET' });
+  const { response, result } = await authFetch('/auth/me.php', { method: 'GET' });
 
   // authFetch sudah handle redirect untuk status 401 (token invalid/expired).
   if (response.status === 401) return null;
@@ -69,7 +69,7 @@ async function requireAuth(allowedRoles) {
  */
 async function logout() {
   try {
-    await authFetch('/auth/logout', { method: 'POST' });
+    await authFetch('/auth/logout.php', { method: 'POST' });
   } catch (err) {
     // Tetap lanjut hapus sesi lokal & redirect walau request logout gagal
     // (mis. koneksi terputus) -- tidak ada gunanya menahan user di halaman.
