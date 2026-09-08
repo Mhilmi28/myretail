@@ -146,7 +146,7 @@ function bindEvents() {
 
 /** Ambil daftar kategori buat filter & dropdown form (GET /categories). */
 async function loadCategories() {
-  const { result } = await authFetch('/categories', { method: 'GET' });
+  const { result } = await authFetch('/categories/get_categories.php', { method: 'GET' });
   if (!result.success) return;
 
   const categorySelect = document.getElementById('productCategory');
@@ -380,7 +380,7 @@ async function handleProductFormSubmit(e) {
   saveBtn.textContent = 'Menyimpan...';
 
   const isEdit = editingProductId !== null;
-  const endpoint = isEdit ? `/products/${editingProductId}` : '/products';
+  const endpoint = isEdit ? `/products/update_product.php?id=${editingProductId}` : `/products/add_product.php`;
   const method = isEdit ? 'PUT' : 'POST';
 
   try {
@@ -464,7 +464,7 @@ async function handleStockFormSubmit(e) {
   saveBtn.textContent = 'Menyimpan...';
 
   try {
-    const { result } = await authFetch(`/products/${stockEditingProductId}/stock`, {
+    const { result } = await authFetch(`/products/update_stock.php?id=${stockEditingProductId}`, {
       method: 'PATCH',
       body: JSON.stringify({ stock: Number(els.stockValue.value) }),
     });
@@ -499,7 +499,7 @@ async function handleDeleteProduct(product) {
   const confirmed = confirm(`Hapus produk "${product.name}"? Tindakan ini tidak bisa dibatalkan.`);
   if (!confirmed) return;
 
-  const { result } = await authFetch(`/products/${product.id}`, { method: 'DELETE' });
+  const { result } = await authFetch(`/products/delete_product.php?id=${product.id}`, { method: 'DELETE' });
 
   if (!result.success) {
     alert(result.message || 'Gagal menghapus produk.');
