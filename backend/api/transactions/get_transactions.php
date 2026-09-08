@@ -11,6 +11,8 @@ requireAuth($conn);
 
 $date = $_GET['date'] ?? '';
 $cashierId = $_GET['cashier_id'] ?? '';
+$startDate = $_GET['start_date'] ?? ''; 
+$endDate = $_GET['end_date'] ?? '';
 
 $sql = "SELECT t.transaction_code, t.total, t.payment_method, t.status, t.created_at,
             u.id AS cashier_id, u.name AS cashier_name
@@ -23,6 +25,16 @@ $params = [];
 if(!empty($date)){
     $sql .= " AND DATE(t.created_at) = :date";
     $params['date'] = $date;
+}
+
+if (!empty($startDate)) {
+    $sql .= " AND DATE(t.created_at) >= :start_date";
+    $params['start_date'] = $startDate;
+}
+
+if (!empty($endDate)) {
+    $sql .= " AND DATE(t.created_at) <= :end_date";
+    $params['end_date'] = $endDate;
 }
 
 if(!empty($cashierId)){

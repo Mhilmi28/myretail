@@ -15,7 +15,8 @@ if(empty($code)){
     sendError("Code harus diisi", 422);
 }
 
-$stmt = $conn->prepare("SELECT t.id, t.transaction_code, t.total, t.payment_method, t.status, t.created_at,
+$stmt = $conn->prepare("SELECT t.id, t.transaction_code, t.total, t.subtotal, t.discount_total, 
+                            t.cash_received, t.change_amount, t.payment_method, t.status, t.created_at,
                             u.id AS cashier_id, u.name AS cashier_name
                         FROM transactions t
                         JOIN users u ON u.id = t.user_id
@@ -52,6 +53,10 @@ sendSuccess([
         'id' => $transaction['cashier_id'],
         'name' => $transaction['cashier_name']
     ],
+    'subtotal' => $transaction['subtotal'],
+    'discount_total' => $transaction['discount_total'],
+    'cash_received' => $transaction['cash_received'],
+    'change' => $transaction['change_amount'],
     'items' => $formattedItems,
     'total' => $transaction['total'],
     'payment_method' => $transaction['payment_method'],

@@ -352,11 +352,9 @@ async function handlePayment() {
   const itemsDiscount = cart.reduce((sum, item) => sum + item.discount_amount, 0);
   const total = Math.max(0, subtotal - itemsDiscount - discountTotal);
 
-  const isHutang = paymentMethod === 'hutang';
-  // Lihat catatan di atas file: hutang dikirim sebagai cash Rp 0 karena
-  // enum payment_method backend belum punya nilai khusus untuk ini.
-  const actualPaymentMethod = isHutang ? 'cash' : paymentMethod;
-  const actualCashReceived = isHutang ? 0 : (paymentMethod === 'cash' ? cashReceived : undefined);
+  const isHutang = paymentMethod === 'hutang';   // <- balik ke 'hutang', BUKAN 'debt'
+  const actualPaymentMethod = isHutang ? 'debt' : paymentMethod;   // <- 'debt', bukan 'cash'
+  const actualCashReceived = paymentMethod === 'cash' ? cashReceived : undefined;   // <- hutang gak perlu cash_received sama sekali
 
   const payload = {
     items: cart.map((item) => ({
@@ -367,6 +365,7 @@ async function handlePayment() {
     discount_total: discountTotal,
     payment_method: actualPaymentMethod,
     ...(actualCashReceived !== undefined ? { cash_received: actualCashReceived } : {}),
+    ...(isHutang ? { customer_name: customerName.trim() } : {}),   // <- baru: kirim customer_name langsung
   };
 
   try {
@@ -381,11 +380,7 @@ async function handlePayment() {
     }
 
     let debtWarning = null;
-
-    if (isHutang) {
-      debtWarning = await recordDebt(result.data, total);
-    }
-
+    
     // Refresh stok di product picker karena stok sudah berkurang di server.
     await loadProductPicker(els.productSearchInput.value.trim());
 

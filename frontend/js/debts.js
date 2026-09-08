@@ -5,6 +5,8 @@
 // ==========================================================================
 
 let currentStatusFilter = '';
+let currentCustomerSearch = '';
+let searchTimeout; 
 
 const els = {};
 
@@ -23,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function cacheElements() {
   els.statusFilter = document.getElementById('statusFilter');
+  els.customerSearchInput = document.getElementById('customerSearchInput'); 
   els.addDebtBtn = document.getElementById('addDebtBtn');
   els.tableBody = document.getElementById('debtTableBody');
   els.statUnpaidTotal = document.getElementById('statUnpaidTotal');
@@ -59,6 +62,14 @@ function bindEvents() {
     loadDebts();
   });
 
+  els.customerSearchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        currentCustomerSearch = els.customerSearchInput.value.trim();
+        loadDebts();
+      }, 400);
+  });
+
   els.addDebtBtn.addEventListener('click', openDebtModal);
   document.getElementById('closeDebtModalBtn').addEventListener('click', closeDebtModal);
   document.getElementById('cancelDebtBtn').addEventListener('click', closeDebtModal);
@@ -70,13 +81,14 @@ function bindEvents() {
 // ==========================================================================
 
 async function loadDebts() {
-  els.tableBody.innerHTML = `
-    <tr><td colspan="6"><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>
-  `;
+  els.tableBody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>`;
 
-  const params = currentStatusFilter ? `?status=${currentStatusFilter}` : '';
-  const { result } = await authFetch(`/debts/get_debts.php?${params}`, { method: 'GET' });
+  const query = new URLSearchParams();
+  if (currentStatusFilter) query.set('status', currentStatusFilter);
+  if (currentCustomerSearch) query.set('customer_name', currentCustomerSearch);
+  const params = query.toString() ? `?${query.toString()}` : '';
 
+  const { result } = await authFetch(`/debts/get_debts.php${params}`, { method: 'GET' });
   if (!result.success) {
     els.tableBody.innerHTML = `
       <tr><td colspan="6">
@@ -151,7 +163,7 @@ async function handleMarkPaid(debtId, customerName) {
   const confirmed = confirm(`Tandai piutang atas nama "${customerName}" sebagai lunas?`);
   if (!confirmed) return;
 
-  const { result } = await authFetch(`/debts/update_debt.php?${debtId}`, {
+  const { result } = await authFetch(`/debts/update_debt.php?id=${debtId}`, {
     method: 'PATCH',
     body: JSON.stringify({ status: 'paid' }),
   });

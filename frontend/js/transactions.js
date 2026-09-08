@@ -271,7 +271,7 @@ async function openDetailModal(transactionId) {
     <div class="empty-state"><span class="empty-state__title">Memuat detail...</span></div>
   `;
 
-  const { result } = await authFetch(`/transactions/get_transaction_detail.php?${transactionId}`, { method: 'GET' });
+  const { result } = await authFetch(`/transactions/get_transaction_detail.php?code=${transactionId}`, { method: 'GET' });
 
   if (!result.success) {
     els.detailModalBody.innerHTML = `
@@ -340,7 +340,7 @@ function closeDetailModal() {
 // ==========================================================================
 
 function paymentMethodLabel(method) {
-  const map = { cash: 'Tunai', qris: 'QRIS', transfer: 'Transfer', debit: 'Debit' };
+  const map = { cash: 'Tunai', qris: 'QRIS', transfer: 'Transfer', debit: 'Debit', debt: 'Hutang' };
   return map[method] || method;
 }
 
