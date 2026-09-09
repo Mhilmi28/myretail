@@ -4,14 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Biaya Operasional - Myretail</title>
+<<<<<<< HEAD
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+=======
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <div class="dashboard" id="dashboardRoot" hidden>
 
+<<<<<<< HEAD
+=======
+    <!-- ===== SIDEBAR ===== -->
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
     <aside class="dashboard__sidebar">
       <div class="dashboard__brand">
         <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
@@ -75,11 +86,23 @@
         </li>
       </ul>
 
+<<<<<<< HEAD
       <button type="button" class="dashboard__logout" id="logoutBtn">Log out</button>
     </aside>
 
     <header class="dashboard__topbar">
       <h1 class="dashboard__page-title">Biaya Operasional</h1>
+=======
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Biaya Operasional</h1>
+
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
       <div class="dashboard__user">
         <div class="dashboard__user-info">
           <div class="dashboard__user-name" id="userName">-</div>
@@ -89,10 +112,15 @@
       </div>
     </header>
 
+<<<<<<< HEAD
+=======
+    <!-- ===== CONTENT ===== -->
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
     <main class="dashboard__content">
 
       <section class="stat-grid">
         <div class="stat-card">
+<<<<<<< HEAD
           <div class="stat-card__label">Total Biaya Bulan Ini</div>
           <div class="stat-card__value" id="statTotalExpense">Rp 0</div>
         </div>
@@ -109,6 +137,41 @@
         </div>
         <div class="toolbar__spacer"></div>
         <button type="button" class="btn btn--solid" id="addExpenseBtn">+ Tambah Biaya</button>
+=======
+          <div class="stat-card__label">Total Biaya Periode Ini</div>
+          <div class="stat-card__value" id="statTotalExpense">Rp 0</div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <select class="select" id="monthFilter">
+          <option value="">Semua Bulan</option>
+          <option value="1">Januari</option>
+          <option value="2">Februari</option>
+          <option value="3">Maret</option>
+          <option value="4">April</option>
+          <option value="5">Mei</option>
+          <option value="6">Juni</option>
+          <option value="7">Juli</option>
+          <option value="8">Agustus</option>
+          <option value="9">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+
+        <select class="select" id="yearFilter">
+          <!-- diisi otomatis lewat JS -->
+        </select>
+
+        <button type="button" class="btn btn--ghost" id="resetFilterBtn">Reset Filter</button>
+
+        <div class="toolbar__spacer"></div>
+
+        <button type="button" class="btn btn--solid" id="addExpenseBtn">
+          + Catat Biaya
+        </button>
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
       </div>
 
       <section class="panel">
@@ -117,6 +180,7 @@
             <thead>
               <tr>
                 <th>Nama Biaya</th>
+<<<<<<< HEAD
                 <th>Tanggal</th>
                 <th class="is-numeric">Jumlah</th>
                 <th></th>
@@ -124,6 +188,21 @@
             </thead>
             <tbody id="expenseTableBody">
               <tr><td colspan="4"><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>
+=======
+                <th class="is-numeric">Jumlah</th>
+                <th>Tanggal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody">
+              <tr>
+                <td colspan="4">
+                  <div class="empty-state">
+                    <span class="empty-state__title">Memuat data...</span>
+                  </div>
+                </td>
+              </tr>
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
             </tbody>
           </table>
         </div>
@@ -132,10 +211,18 @@
 
   </div>
 
+<<<<<<< HEAD
   <div class="modal-overlay" id="expenseModalOverlay" hidden>
     <div class="modal">
       <div class="modal__header">
         <h2 class="modal__title">Tambah Biaya</h2>
+=======
+  <!-- ===== MODAL: Catat Biaya (POST /expenses) ===== -->
+  <div class="modal-overlay" id="expenseModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Catat Biaya Operasional</h2>
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
         <button type="button" class="modal__close" id="closeExpenseModalBtn">✕</button>
       </div>
 
@@ -145,6 +232,7 @@
 
           <div class="field">
             <label class="field__label" for="expenseName">Nama Biaya</label>
+<<<<<<< HEAD
             <input type="text" id="expenseName" class="input" placeholder="Contoh: Listrik, Sewa toko" required>
             <span class="field__error" id="expenseNameError"></span>
           </div>
@@ -160,6 +248,22 @@
               <input type="date" id="expenseDate" class="input" required>
               <span class="field__error" id="expenseDateError"></span>
             </div>
+=======
+            <input type="text" id="expenseName" class="input" placeholder="Contoh: Listrik, Sewa Toko" required>
+            <span class="field__error" id="expenseNameError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="expenseAmount">Jumlah (Rp)</label>
+            <input type="number" id="expenseAmount" class="input" min="0" required>
+            <span class="field__error" id="expenseAmountError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="expenseDate">Tanggal</label>
+            <input type="date" id="expenseDate" class="input" required>
+            <span class="field__error" id="expenseDateError"></span>
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
           </div>
         </div>
 
@@ -171,8 +275,16 @@
     </div>
   </div>
 
+<<<<<<< HEAD
+=======
+  <!-- External JS -->
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
   <script src="js/config.js"></script>
   <script src="js/auth-guard.js"></script>
   <script src="js/expenses.js"></script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)

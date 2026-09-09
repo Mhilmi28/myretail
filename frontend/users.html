@@ -3,26 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kategori - Myretail</title>
-<<<<<<< HEAD
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-=======
+  <title>Manajemen User - Myretail</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <div class="dashboard" id="dashboardRoot" hidden>
 
-<<<<<<< HEAD
-=======
     <!-- ===== SIDEBAR ===== -->
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
     <aside class="dashboard__sidebar">
       <div class="dashboard__brand">
         <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
@@ -49,7 +41,7 @@
           </a>
         </li>
         <li data-roles="owner">
-          <a href="categories.html" class="sidebar-nav__link is-active">
+          <a href="categories.html" class="sidebar-nav__link">
             <span class="sidebar-nav__icon">🏷️</span>
             <span class="sidebar-nav__label">Kategori</span>
           </a>
@@ -79,20 +71,13 @@
           </a>
         </li>
         <li data-roles="owner">
-          <a href="users.html" class="sidebar-nav__link">
+          <a href="users.html" class="sidebar-nav__link is-active">
             <span class="sidebar-nav__icon">👥</span>
             <span class="sidebar-nav__label">Manajemen User</span>
           </a>
         </li>
       </ul>
 
-<<<<<<< HEAD
-      <button type="button" class="dashboard__logout" id="logoutBtn">Log out</button>
-    </aside>
-
-    <header class="dashboard__topbar">
-      <h1 class="dashboard__page-title">Kategori</h1>
-=======
       <button type="button" class="dashboard__logout" id="logoutBtn">
         Log out
       </button>
@@ -100,9 +85,8 @@
 
     <!-- ===== TOPBAR ===== -->
     <header class="dashboard__topbar">
-      <h1 class="dashboard__page-title">Kategori</h1>
+      <h1 class="dashboard__page-title">Manajemen User</h1>
 
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
       <div class="dashboard__user">
         <div class="dashboard__user-info">
           <div class="dashboard__user-name" id="userName">-</div>
@@ -112,49 +96,33 @@
       </div>
     </header>
 
-<<<<<<< HEAD
-    <main class="dashboard__content">
-
-      <div class="toolbar">
-        <p style="font-size:0.85rem; color:var(--color-text-muted); margin:0;">
-          Kategori dipakai untuk mengelompokkan produk. Belum bisa diedit/dihapus dari sini
-          — hubungi tim backend kalau butuh fitur itu.
-        </p>
-        <div class="toolbar__spacer"></div>
-        <button type="button" class="btn btn--solid" id="addCategoryBtn">+ Tambah Kategori</button>
-=======
     <!-- ===== CONTENT ===== -->
     <main class="dashboard__content">
       <div class="toolbar">
         <div class="toolbar__spacer"></div>
-        <button type="button" class="btn btn--solid" id="addCategoryBtn">
-          + Tambah Kategori
+        <button type="button" class="btn btn--solid" id="addUserBtn">
+          + Tambah Akun Kasir
         </button>
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
       </div>
 
       <section class="panel">
         <div class="table-wrapper">
           <table class="data-table">
-<<<<<<< HEAD
-            <thead><tr><th>Nama Kategori</th></tr></thead>
-            <tbody id="categoryTableBody">
-              <tr><td><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>
-=======
             <thead>
               <tr>
-                <th>Nama Kategori</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Role</th>
               </tr>
             </thead>
-            <tbody id="categoryTableBody">
+            <tbody id="userTableBody">
               <tr>
-                <td>
+                <td colspan="3">
                   <div class="empty-state">
                     <span class="empty-state__title">Memuat data...</span>
                   </div>
                 </td>
               </tr>
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
             </tbody>
           </table>
         </div>
@@ -163,52 +131,48 @@
 
   </div>
 
-<<<<<<< HEAD
-=======
-  <!-- ===== MODAL: Tambah Kategori (POST /categories) ===== -->
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
-  <div class="modal-overlay" id="categoryModalOverlay" hidden>
+  <!-- ===== MODAL: Tambah Akun Kasir (POST /auth/register) ===== -->
+  <div class="modal-overlay" id="userModalOverlay" hidden>
     <div class="modal">
       <div class="modal__header">
-        <h2 class="modal__title">Tambah Kategori</h2>
-        <button type="button" class="modal__close" id="closeCategoryModalBtn">✕</button>
+        <h2 class="modal__title">Tambah Akun Kasir</h2>
+        <button type="button" class="modal__close" id="closeUserModalBtn">✕</button>
       </div>
 
-      <form id="categoryForm">
+      <form id="userForm">
         <div class="modal__body">
-          <p class="field__error" id="categoryFormError" style="display:none;"></p>
-<<<<<<< HEAD
-          <div class="field">
-            <label class="field__label" for="categoryName">Nama Kategori</label>
-            <input type="text" id="categoryName" class="input" placeholder="Contoh: Minuman" required>
-=======
+          <p class="field__error" id="userFormError" style="display:none;"></p>
 
           <div class="field">
-            <label class="field__label" for="categoryName">Nama Kategori</label>
-            <input type="text" id="categoryName" class="input" required>
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
-            <span class="field__error" id="categoryNameError"></span>
+            <label class="field__label" for="newUserName">Nama</label>
+            <input type="text" id="newUserName" class="input" required>
+            <span class="field__error" id="newUserNameError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="newUserEmail">Email</label>
+            <input type="email" id="newUserEmail" class="input" required>
+            <span class="field__error" id="newUserEmailError"></span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="newUserPassword">Password</label>
+            <input type="password" id="newUserPassword" class="input" required minlength="8">
+            <span class="field__error" id="newUserPasswordError"></span>
           </div>
         </div>
 
         <div class="modal__footer">
-          <button type="button" class="btn btn--ghost" id="cancelCategoryBtn">Batal</button>
-          <button type="submit" class="btn btn--solid" id="saveCategoryBtn">Simpan</button>
+          <button type="button" class="btn btn--ghost" id="cancelUserBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveUserBtn">Simpan</button>
         </div>
       </form>
     </div>
   </div>
 
-<<<<<<< HEAD
-=======
   <!-- External JS -->
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)
   <script src="js/config.js"></script>
   <script src="js/auth-guard.js"></script>
-  <script src="js/categories.js"></script>
+  <script src="js/users.js"></script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 0ac1a24 (tambah fitur categories, expenses, users)

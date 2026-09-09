@@ -23,9 +23,9 @@
 
       <ul class="sidebar-nav">
         <li>
-          <a href="dashboard-cashier.html" class="sidebar-nav__link is-active">
-            <span class="sidebar-nav__icon">🛒</span>
-            <span class="sidebar-nav__label">Kasir (POS)</span>
+          <a href="pos.html" class="sidebar-nav__link">
+              <span class="sidebar-nav__icon">🛒</span>
+              <span class="sidebar-nav__label">Kasir (POS)</span>
           </a>
         </li>
         <li>
@@ -62,17 +62,27 @@
 
     <!-- ===== CONTENT ===== -->
     <main class="dashboard__content">
-      <p class="dashboard__welcome">Mulai transaksi penjualan baru.</p>
+        <p class="dashboard__welcome">Mulai transaksi penjualan baru.</p>
 
-      <!-- Placeholder halaman POS, akan diisi form transaksi di iterasi berikutnya -->
-      <section class="panel">
-        <h2 class="panel__title">Transaksi Baru</h2>
-        <div class="empty-state" id="posEmptyState">
-          <span class="empty-state__title">Form kasir belum dibangun</span>
-          <p>Halaman ini akan terhubung ke <code>POST /transactions</code> — pilih produk, hitung total, pilih metode pembayaran.</p>
-        </div>
-      </section>
-    </main>
+        <section class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__label">Transaksi Hari Ini</div>
+              <div class="stat-card__value" id="statTodayCount">-</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Pendapatan Hari Ini</div>
+              <div class="stat-card__value" id="statTodayRevenue">-</div>
+            </div>
+        </section>
+
+  <section class="panel">
+    <h2 class="panel__title">Transaksi Baru</h2>
+    <p style="margin-bottom:1rem; color:var(--color-text-muted);">
+      Mulai transaksi penjualan baru langsung dari halaman Kasir.
+    </p>
+    <a href="pos.html" class="btn btn--solid">+ Mulai Transaksi Baru</a>
+  </section>
+</main>
 
   </div>
 

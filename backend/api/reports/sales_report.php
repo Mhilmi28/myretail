@@ -13,6 +13,10 @@ $period = $_GET['period'] ?? '';
 $year = $_GET['year'] ?? '';
 $month = $_GET['month'] ?? '';
 
+if(empty($year)){
+    sendError('Tahun wajib diisi', 422);
+}
+
 if ($period === 'monthly') {
     $where = "WHERE MONTH(created_at) = :month AND YEAR(created_at) = :year";
     $params = ['month' => $month, 'year' => $year];
