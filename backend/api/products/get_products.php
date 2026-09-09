@@ -11,6 +11,9 @@ requireAuth($conn);
 
 $search = $_GET['search'] ?? '';
 $categoryId = $_GET['category_id'] ?? '';
+$page = (int) ($_GET['page'] ?? 1);
+$limit = (int) ($_GET['limit'] ?? 10);
+$offset = ($page - 1) * $limit;
 
 $searchParam = '%' . $search . '%';
 
@@ -26,9 +29,24 @@ if (!empty($categoryId)) {
     $params['category_id'] = $categoryId;
 }
 
+$countSql = "SELECT COUNT(*) AS total FROM products p WHERE p.name LIKE :search" . (!empty($categoryId) ? " AND p.category_id = :category_id" : "");
+$countStmt = $conn->prepare($countSql);
+$countStmt->execute($params);
+$totalData = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+$sql .= " LIMIT :limit OFFSET :offset";
+
 $stmt = $conn->prepare($sql);
-$stmt->execute($params);
+$stmt->bindValue(':search', $searchParam);
+if (!empty($categoryId)) {
+    $stmt->bindValue(':category_id', $categoryId);
+}
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$totalPage = ceil($totalData / $limit);
 
 $result = array_map(function($p) {
     return [
@@ -45,4 +63,8 @@ $result = array_map(function($p) {
     ];
 }, $products);
 
-sendSuccess($result);
+sendSuccess($result, 'berhasil', 200, [
+    'current_page' => $page,
+    'total_page' => $totalPage,
+    'total_data' => $totalData
+]);

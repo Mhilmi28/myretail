@@ -1,11 +1,18 @@
 <?php 
-function sendSuccess($data = null, $message = 'berhasil', $code = 200){
+function sendSuccess($data = null, $message = 'berhasil', $code = 200, $meta = null){
     http_response_code($code);
-    echo json_encode([
+
+    $response = [
         'success' => true,
         'data' => $data,
         'message' => $message
-    ]);
+    ];
+
+    if ($meta !== null) {
+        $response['meta'] = $meta;
+    }
+
+    echo json_encode($response);
     exit;
 }
 
