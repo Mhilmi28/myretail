@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biaya Operasional - Myretail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="pos.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">Log out</button>
+    </aside>
+
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Biaya Operasional</h1>
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role">Owner</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <main class="dashboard__content">
+
+      <section class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__label">Total Biaya Bulan Ini</div>
+          <div class="stat-card__value" id="statTotalExpense">Rp 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Jumlah Transaksi Biaya</div>
+          <div class="stat-card__value" id="statExpenseCount">0</div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <div class="field" style="gap:0.2rem;">
+          <label class="field__label" for="monthFilter" style="font-size:0.75rem;">Bulan</label>
+          <input type="month" id="monthFilter" class="input">
+        </div>
+        <div class="toolbar__spacer"></div>
+        <button type="button" class="btn btn--solid" id="addExpenseBtn">+ Tambah Biaya</button>
+      </div>
+
+      <section class="panel">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nama Biaya</th>
+                <th>Tanggal</th>
+                <th class="is-numeric">Jumlah</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody">
+              <tr><td colspan="4"><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <div class="modal-overlay" id="expenseModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Tambah Biaya</h2>
+        <button type="button" class="modal__close" id="closeExpenseModalBtn">✕</button>
+      </div>
+
+      <form id="expenseForm">
+        <div class="modal__body">
+          <p class="field__error" id="expenseFormError" style="display:none;"></p>
+
+          <div class="field">
+            <label class="field__label" for="expenseName">Nama Biaya</label>
+            <input type="text" id="expenseName" class="input" placeholder="Contoh: Listrik, Sewa toko" required>
+            <span class="field__error" id="expenseNameError"></span>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="expenseAmount">Jumlah (Rp)</label>
+              <input type="number" id="expenseAmount" class="input" min="0" required>
+              <span class="field__error" id="expenseAmountError"></span>
+            </div>
+            <div class="field">
+              <label class="field__label" for="expenseDate">Tanggal</label>
+              <input type="date" id="expenseDate" class="input" required>
+              <span class="field__error" id="expenseDateError"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" id="cancelExpenseBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveExpenseBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/expenses.js"></script>
+</body>
+</html>
