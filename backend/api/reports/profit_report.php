@@ -44,14 +44,25 @@ $stmt = $conn->prepare("SELECT COALESCE(SUM(amount), 0) AS total_expenses
 $stmt->execute($params);
 $expenseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Diskon per-item (dari transaction_items), terpisah dari diskon level-transaksi di atas.
+$itemDiscountWhere = str_replace('created_at', 't.created_at', $whereTrx);
+
+$stmt = $conn->prepare("SELECT COALESCE(SUM(ti.discount_amount), 0) AS item_discount
+                        FROM transaction_items ti
+                        JOIN transactions t ON t.id = ti.transaction_id
+                        $itemDiscountWhere AND t.status = 'success'");
+$stmt->execute($params);
+$itemDiscountData = $stmt->fetch(PDO::FETCH_ASSOC);
+
 $grossProfit = (int) $transactionData['revenue'];
 $totalExpenses = (int) $expenseData['total_expenses'];
 $netProfit = $grossProfit - $totalExpenses;
+$totalDiscount = (int) $transactionData['total_discount'] + (int) $itemDiscountData['item_discount'];
 
 sendSuccess([
     'period' => $periodLabel,
     'gross_profit' => $grossProfit,
     'total_expenses' => $totalExpenses,
     'net_profit' => $netProfit,
-    'total_discount_given' => (int) $transactionData['total_discount']
+    'total_discount_given' => $totalDiscount
 ]);

@@ -18,9 +18,18 @@ if(empty($year)){
 }
 
 if ($period === 'monthly') {
+    
+    if (empty($month)) {
+        sendError('Bulan wajib diisi untuk laporan bulanan', 422);
+    }
+
     $where = "WHERE MONTH(created_at) = :month AND YEAR(created_at) = :year";
     $params = ['month' => $month, 'year' => $year];
     $periodLabel = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT);
+
+    if (empty($month)) {
+        sendError('Bulan wajib diisi untuk laporan bulanan', 422);
+    }
 } else {
     $where = "WHERE YEAR(created_at) = :year";
     $params = ['year' => $year];
