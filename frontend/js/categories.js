@@ -129,6 +129,7 @@ async function handleCategoryFormSubmit(e) {
     }
 
     closeCategoryModal();
+    showToast('Kategori berhasil ditambahkan'); 
     await loadCategories();
   } catch (err) {
     console.error('Save category error:', err);

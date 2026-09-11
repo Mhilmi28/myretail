@@ -158,6 +158,7 @@ async function handleToggleStatus(userId, userName, isCurrentlyActive) {
     return;
   }
 
+  showToast(`Akun "${userName}" berhasil ${isCurrentlyActive ? 'dinonaktifkan' : 'diaktifkan'}`);
   await loadUsers();
 }
 
@@ -206,6 +207,7 @@ async function handleUserFormSubmit(e) {
     }
 
     closeUserModal();
+    showToast('Akun kasir berhasil dibuat');
     await loadUsers();
   } catch (err) {
     console.error('Register user error:', err);

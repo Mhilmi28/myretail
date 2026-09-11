@@ -399,6 +399,7 @@ async function handleProductFormSubmit(e) {
     }
 
     closeProductModal();
+    showToast(isEdit ? 'Produk berhasil diperbarui' : 'Produk berhasil ditambahkan');
     await loadProducts();
   } catch (err) {
     console.error('Save product error:', err);
@@ -480,6 +481,7 @@ async function handleStockFormSubmit(e) {
     }
 
     closeStockModal();
+    showToast('Stok berhasil diperbarui');
     await loadProducts();
   } catch (err) {
     console.error('Update stock error:', err);
@@ -506,6 +508,7 @@ async function handleDeleteProduct(product) {
     return;
   }
 
+  showToast('Produk berhasil dihapus');
   await loadProducts();
 }
 

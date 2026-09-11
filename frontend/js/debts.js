@@ -173,6 +173,7 @@ async function handleMarkPaid(debtId, customerName) {
     return;
   }
 
+  showToast('Piutang ditandai lunas');
   await loadDebts();
 }
 
@@ -220,6 +221,7 @@ async function handleDebtFormSubmit(e) {
     }
 
     closeDebtModal();
+    showToast('Piutang berhasil dicatat');
     await loadDebts();
   } catch (err) {
     console.error('Save debt error:', err);

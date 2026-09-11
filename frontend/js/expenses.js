@@ -163,6 +163,7 @@ async function handleDeleteExpense(expenseId, expenseName) {
     return;
   }
 
+  showToast('Biaya berhasil dihapus');
   await loadExpenses();
 }
 
@@ -206,6 +207,7 @@ async function handleExpenseFormSubmit(e) {
     }
 
     closeExpenseModal();
+    showToast('Biaya berhasil dicatat');
     await loadExpenses();
   } catch (err) {
     console.error('Save expense error:', err);
