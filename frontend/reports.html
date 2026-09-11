@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan - Myretail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboardRoot" hidden>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="dashboard__sidebar">
+      <div class="dashboard__brand">
+        <img src="assets/icon-store.svg" alt="" class="dashboard__brand-logo">
+        <span>Myretail</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li data-roles="owner,cashier">
+          <a href="#" class="sidebar-nav__link" id="navHome">
+            <span class="sidebar-nav__icon">🏠</span>
+            <span class="sidebar-nav__label">Dashboard</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="pos.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🛒</span>
+            <span class="sidebar-nav__label">Kasir (POS)</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="products.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">📦</span>
+            <span class="sidebar-nav__label">Produk</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="categories.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🏷️</span>
+            <span class="sidebar-nav__label">Kategori</span>
+          </a>
+        </li>
+        <li data-roles="owner,cashier">
+          <a href="transactions.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">🧾</span>
+            <span class="sidebar-nav__label">Riwayat Transaksi</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="debts.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💳</span>
+            <span class="sidebar-nav__label">Piutang</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="expenses.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">💸</span>
+            <span class="sidebar-nav__label">Biaya Operasional</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="reports.html" class="sidebar-nav__link is-active">
+            <span class="sidebar-nav__icon">📈</span>
+            <span class="sidebar-nav__label">Laporan</span>
+          </a>
+        </li>
+        <li data-roles="owner">
+          <a href="users.html" class="sidebar-nav__link">
+            <span class="sidebar-nav__icon">👥</span>
+            <span class="sidebar-nav__label">Manajemen User</span>
+          </a>
+        </li>
+      </ul>
+
+      <button type="button" class="dashboard__logout" id="logoutBtn">
+        Log out
+      </button>
+    </aside>
+
+    <!-- ===== TOPBAR ===== -->
+    <header class="dashboard__topbar">
+      <h1 class="dashboard__page-title">Laporan</h1>
+
+      <div class="dashboard__user">
+        <div class="dashboard__user-info">
+          <div class="dashboard__user-name" id="userName">-</div>
+          <span class="dashboard__user-role">Owner</span>
+        </div>
+        <div class="dashboard__avatar" id="userAvatar">-</div>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="dashboard__content">
+
+      <!-- Filter periode -->
+      <div class="toolbar">
+        <select class="select" id="periodFilter">
+          <option value="monthly">Bulanan</option>
+          <option value="yearly">Tahunan</option>
+        </select>
+
+        <select class="select" id="monthFilter">
+          <option value="1">Januari</option>
+          <option value="2">Februari</option>
+          <option value="3">Maret</option>
+          <option value="4">April</option>
+          <option value="5">Mei</option>
+          <option value="6">Juni</option>
+          <option value="7">Juli</option>
+          <option value="8">Agustus</option>
+          <option value="9">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+
+        <select class="select" id="yearFilter">
+          <!-- diisi otomatis lewat JS -->
+        </select>
+      </div>
+
+      <p id="reportPeriodLabel" style="color:var(--color-text-muted); margin-bottom:1rem;"></p>
+
+      <div id="reportContent">
+
+        <!-- Sales Report -->
+        <section class="panel" style="margin-bottom:1.5rem;">
+          <h2 class="panel__title">Laporan Penjualan</h2>
+
+          <section class="stat-grid" style="margin-top:1rem;">
+            <div class="stat-card">
+              <div class="stat-card__label">Total Transaksi</div>
+              <div class="stat-card__value" id="statTotalTransactions">-</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Total Pendapatan</div>
+              <div class="stat-card__value" id="statTotalRevenue">-</div>
+            </div>
+          </section>
+
+          <h3 style="margin-top:1.5rem; margin-bottom:0.75rem; font-size:0.95rem;">Produk Terlaris</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Produk</th>
+                  <th class="is-numeric">Qty Terjual</th>
+                </tr>
+              </thead>
+              <tbody id="topProductsBody">
+                <tr><td colspan="2"><div class="empty-state"><span class="empty-state__title">Memuat data...</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Profit Report -->
+        <section class="panel">
+          <h2 class="panel__title">Laporan Keuntungan</h2>
+
+          <section class="stat-grid" style="margin-top:1rem;">
+            <div class="stat-card">
+              <div class="stat-card__label">Keuntungan Kotor</div>
+              <div class="stat-card__value" id="statGrossProfit">-</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Total Biaya Operasional</div>
+              <div class="stat-card__value" id="statTotalExpenses">-</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Keuntungan Bersih</div>
+              <div class="stat-card__value" id="statNetProfit">-</div>
+            </div>
+          </section>
+
+          <p style="margin-top:1rem; font-size:0.85rem; color:var(--color-text-muted);">
+            Total diskon diberikan pada periode ini: <strong id="statTotalDiscount">-</strong>
+          </p>
+          <p style="margin-top:0.5rem; font-size:0.8rem; color:var(--color-text-muted);">
+            Catatan: keuntungan kotor dihitung dari pendapatan (setelah diskon transaksi), belum dikurangi harga modal produk (belum dicatat di sistem saat ini).
+          </p>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- External JS -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>

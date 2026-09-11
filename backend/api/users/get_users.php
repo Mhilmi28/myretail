@@ -9,8 +9,18 @@ if($_SERVER['REQUEST_METHOD'] !== 'GET'){
 
 requireAuth($conn, 'owner');
 
-$stmt = $conn->prepare("SELECT id, name, email, role FROM users");
+$stmt = $conn->prepare("SELECT id, name, email, role, is_active FROM users");
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-sendSuccess($users);
+$result = array_map(function($u){
+    return [
+        'id' => (int) $u['id'],
+        'name' => $u['name'],
+        'email' => $u['email'],
+        'role' => $u['role'],
+        'is_active' => (int) $u['is_active']
+    ];
+}, $users);
+
+sendSuccess($result, 'Data user berhasil diambil');

@@ -27,6 +27,10 @@ if(!password_verify($password, $user['password'])){
     sendError('Email atau Password salah', 401);
 }
 
+if((int) $user['is_active'] === 0){
+    sendError('Akun ini sudah dinonaktifkan. Hubungi owner untuk mengaktifkan kembali.', 403);
+}
+
 $token = bin2hex(random_bytes(32));
 
 $stmt = $conn->prepare("INSERT INTO tokens (user_id, token) VALUES (:user_id, :token)");

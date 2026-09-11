@@ -113,11 +113,13 @@
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody id="userTableBody">
               <tr>
-                <td colspan="3">
+                <td colspan="5">
                   <div class="empty-state">
                     <span class="empty-state__title">Memuat data...</span>
                   </div>
@@ -165,6 +167,35 @@
         <div class="modal__footer">
           <button type="button" class="btn btn--ghost" id="cancelUserBtn">Batal</button>
           <button type="submit" class="btn btn--solid" id="saveUserBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Reset Password (PATCH /users/reset_password.php) ===== -->
+  <div class="modal-overlay" id="resetPasswordModalOverlay" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Reset Password</h2>
+        <button type="button" class="modal__close" id="closeResetPasswordModalBtn">✕</button>
+      </div>
+
+      <form id="resetPasswordForm">
+        <div class="modal__body">
+          <p class="field__error" id="resetPasswordFormError" style="display:none;"></p>
+
+          <p id="resetPasswordLabel" style="color:var(--color-text-muted); margin-top:-0.4rem;"></p>
+
+          <div class="field">
+            <label class="field__label" for="resetPasswordValue">Password Baru</label>
+            <input type="password" id="resetPasswordValue" class="input" required minlength="8">
+            <span class="field__error" id="resetPasswordValueError"></span>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" id="cancelResetPasswordBtn">Batal</button>
+          <button type="submit" class="btn btn--solid" id="saveResetPasswordBtn">Reset Password</button>
         </div>
       </form>
     </div>
