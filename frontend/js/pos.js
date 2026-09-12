@@ -381,6 +381,8 @@ async function handlePayment() {
 
     let debtWarning = null;
     
+    showToast('Transaksi berhasil!');
+    
     // Refresh stok di product picker karena stok sudah berkurang di server.
     await loadProductPicker(els.productSearchInput.value.trim());
 
